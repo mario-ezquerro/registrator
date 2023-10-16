@@ -11,7 +11,7 @@ RUN \
 		-o bin/registrator \
 		.
 
-FROM alpine:3.7
+FROM alpine:3.18
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /go/src/github.com/gliderlabs/registrator/bin/registrator /bin/registrator
 
