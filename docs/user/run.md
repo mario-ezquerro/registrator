@@ -7,7 +7,7 @@ automation, running everywhere is ironically simpler than running once somewhere
 
 ## Running Registrator
 
-    docker run [docker options] gliderlabs/registrator[:tag] [options] <registry uri>
+    docker run [docker options] mario-ezquerro/registrator[:tag] [options] <registry uri>
 
 Registrator requires and recommends some Docker options, has its own set of options
 and then requires a Registry URI. Here is a typical way to run Registrator:
@@ -16,7 +16,7 @@ and then requires a Registry URI. Here is a typical way to run Registrator:
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        gliderlabs/registrator:latest \
+        mario-ezquerro/registrator:latest \
           consul://localhost:8500
 
 ## Docker Options
@@ -78,7 +78,7 @@ The ACL token is passed in through docker in an environment variable called `CON
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
         -e CONSUL_HTTP_TOKEN=<your acl token> \
-        gliderlabs/registrator:latest \
+        mario-ezquerro/registrator:latest \
           consul://localhost:8500
 
 ## Registry URI

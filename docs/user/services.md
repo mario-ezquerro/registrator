@@ -63,7 +63,7 @@ service name is determined by this pattern:
 
 	<base(container-image)>[-<exposed-port> if >1 ports]
 
-Using the base of the container image, if the image is `gliderlabs/foobar`, the
+Using the base of the container image, if the image is `mario-ezquerro/foobar`, the
 service name is `foobar`. If the image is `redis` the service name is simply
 `redis`.
 

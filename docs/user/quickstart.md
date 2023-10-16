@@ -22,7 +22,7 @@ pointed to that host.
 We'll also need to have Consul running, which can just be running in a
 container. Let's run a single instance of Consul in server bootstrap mode:
 ```
-$ docker run -d --name=consul --net=host gliderlabs/consul-server -bootstrap
+$ docker run -d --name=consul --net=host mario-ezquerro/consul-server -bootstrap
 ```
 Consul is run differently in production, but this will get us through this tutorial.
 We can now access Consul's HTTP API via the Docker machine's IP:
@@ -45,7 +45,7 @@ $ docker run -d \
     --name=registrator \
     --net=host \
     --volume=/var/run/docker.sock:/tmp/docker.sock \
-    gliderlabs/registrator:latest \
+    mario-ezquerro/registrator:latest \
       consul://localhost:8500
 ```
 There's a bit going on here in the Docker run arguments. First, we run the

@@ -2,9 +2,9 @@ version: 2
 jobs:
   build:
     docker:
-      - image: gliderlabs/ci:build-2
+      - image: mario-ezquerro/ci:build-2
         command: ["/bin/bash"]
-    working_directory: /go/src/github.com/gliderlabs/registrator
+    working_directory: /go/src/github.com/mario-ezquerro/registrator
     steps:
       - checkout
       - setup_remote_docker
@@ -19,7 +19,7 @@ jobs:
           name: Deploy website
           command: |
             if is-branch "master"; then
-              eval $(docker run gliderlabs/pagebuilder circleci-cmd)
+              eval $(docker run mario-ezquerro/pagebuilder circleci-cmd)
             fi
       - deploy:
           name: Deploy beta channel

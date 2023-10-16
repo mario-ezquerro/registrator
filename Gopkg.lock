@@ -120,7 +120,7 @@
 [[projects]]
   branch = "master"
   digest = "1:54165f19429ccbd6d48f0ae7df3954b9485b166e6b163c028529892a5a87fabf"
-  name = "github.com/gliderlabs/pkg"
+  name = "github.com/mario-ezquerro/pkg"
   packages = ["usage"]
   pruneopts = "UT"
   revision = "36f28d47ec7aae4d25d3d2741ac5af91f7f18680"
@@ -305,7 +305,7 @@
     "github.com/cenkalti/backoff",
     "github.com/coreos/go-etcd/etcd",
     "github.com/fsouza/go-dockerclient",
-    "github.com/gliderlabs/pkg/usage",
+    "github.com/mario-ezquerro/pkg/usage",
     "github.com/hashicorp/consul/api",
     "github.com/hashicorp/go-cleanhttp",
     "github.com/samuel/go-zookeeper/zk",

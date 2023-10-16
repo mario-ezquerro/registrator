@@ -30,7 +30,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/gliderlabs/pkg"
+  name = "github.com/mario-ezquerro/pkg"
 
 [[constraint]]
   name = "github.com/stretchr/testify"
