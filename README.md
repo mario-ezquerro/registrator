@@ -4,8 +4,8 @@ Service registry bridge for Docker.
 
 [![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator)](https://hub.docker.com/r/marioezquerro/registrator/)
 [![LICENSE](https://img.shields.io/github/license/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/blob/master/LICENSE)
-![GitHub stars](https://img.shields.io/github/stars/mario-ezquerro/registrator.svg?label=github%20stars&logo=github)
 [![External docs](https://img.shields.io/badge/docs-external--registrator-blue)]([https://url](https://mario-ezquerro.github.io/registrator/))
+![GitHub stars](https://img.shields.io/github/stars/mario-ezquerro/registrator.svg?label=github%20stars&logo=github)
 
 
 <br /><br />
@@ -82,5 +82,3 @@ For a full list of sponsors, see
 ## License
 
 MIT
-
-<img src="https://ga-beacon.appspot.com/UA-58928488-2/registrator/readme?pixel" />
