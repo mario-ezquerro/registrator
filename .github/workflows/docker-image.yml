@@ -28,7 +28,7 @@ jobs:
       - name: Build the Docker image
         # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
         run: |
-          docker build . --file Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }} .
+          docker build  --file Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/registrator:${{ github.sha }} .
 
       # Paso 4: Etiquetar la imagen
       - name: Tag Docker image
