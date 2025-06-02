@@ -13,6 +13,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      # Paso 1: Checkout del código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Paso 2: Configurar Docker para autenticarse con Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # Asegúrate de agregar este secreto en GitHub
+          password: ${{ secrets.DOCKER_PASSWORD }}  # Asegúrate de agregar este secreto en GitHub
+
+      # Paso 3: Construir la imagen Docker      
+      - name: Build the Docker image
+        # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: |
+          docker build  --file Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/registrator:${{ github.sha }} .
+
+      # Paso 4: Etiquetar la imagen
+      - name: Tag Docker image
+        run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/registrator:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/registrator:latest
+
+      # Paso 5: Subir la imagen a Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/registrator:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/registrator:latest
