@@ -2,10 +2,9 @@
 
 Service registry bridge for Docker.
 
-![GitHub stars](https://img.shields.io/github/stars/mario-ezquerro/registrator.svg?label=github%20stars&logo=github)
-[![External docs](https://img.shields.io/badge/docs-external--registrator-blue)]([https://url](https://mario-ezquerro.github.io/registrator/))
-[![LICENSE](https://img.shields.io/github/license/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/blob/master/LICENSE)
-[![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator)](https://hub.docker.com/r/marioezquerro/registrator/)
+[![Circle CI](https://circleci.com/gh/mario-ezquerro/registrator.png?style=shield)](https://circleci.com/gh/mario-ezquerro/registrator)
+[![Docker pulls](https://img.shields.io/docker/pulls/mario-ezquerro/registrator.svg)](https://hub.docker.com/r/mario-ezquerro/registrator/)
+[![IRC Channel](https://img.shields.io/badge/irc-%23mario-ezquerro-blue.svg)](https://kiwiirc.com/client/irc.freenode.net/#mario-ezquerro)
 <br /><br />
 
 Registrator automatically registers and deregisters services for any Docker
@@ -53,7 +52,7 @@ Usage of /bin/registrator:
   -resync=0: Frequency with which services are resynchronized
   -retry-attempts=0: Max retry attempts to establish a connection with the backend. Use -1 for infinite retries
   -retry-interval=2000: Interval (in millisecond) between retry-attempts.
-  -tags="": Append tags for all registered services
+  -tags="": Append tags for all registered services (supports Go template)
   -ttl=0: TTL for services (default is no expiry)
   -ttl-refresh=0: Frequency with which service TTLs are refreshed
 ```
@@ -80,3 +79,5 @@ For a full list of sponsors, see
 ## License
 
 MIT
+
+<img src="https://ga-beacon.appspot.com/UA-58928488-2/registrator/readme?pixel" />

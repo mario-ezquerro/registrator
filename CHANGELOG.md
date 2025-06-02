@@ -1,14 +1,50 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased][unreleased]
+## [v7.5.0](https://github.com/mario-ezquerro/registrator/compare/v7.4.0...v7.5.0) - YYYY-MM-DD
+### Changed
+- Upgraded Go version from 1.17 to 1.22 in `go.mod`.
+- Changed Go module path from `github.com/gliderlabs/registrator` to `github.com/mario-ezquerro/registrator` and updated internal import paths.
+- Updated `golang.org/x/sys` to a version compatible with Go 1.22 to resolve build issues.
+- Refreshed various project dependencies by running `go mod tidy`.
+- Updated Dockerfile base images:
+    - Builder stage now uses `golang:1.22-alpine3.20`.
+    - Final stage now uses `alpine:3.20`.
+
 ### Fixed
+- Resolved `//go:linkname must refer to declared function or variable` errors during compilation on macOS by updating `golang.org/x/sys`.
+
+---
+
+## [v7.4.0]() - 2021-09-22
+### Fixed
+- Minor code styling changes
 
 ### Added
+- Support Go template in -tags flag
+    - Custom Go template functions:
+        - `strSlice`
+        - `sIndex`
+        - `mIndex`
+        - `toUpper`
+        - `toLower`
+        - `replace`
+        - `join`
+        - `split`
+        - `splitIndex`
+        - `matchFirstElement`
+        - `matchAllElements`
+        - `httpGet`
+        - `jsonParse`
+- Prebuilt Docker images available on [DockerHub](https://hub.docker.com/r/psyhomb/registrator/tags)
 
 ### Removed
 
 ### Changed
+- [Migrated to Go modules for managing dependencies](https://go.dev/blog/migrating-to-go-modules)
+- Upgraded Docker base images:
+    - builder: `golang:1.9.4-alpine3.7` => `golang:1.17.1-alpine3.14`
+    - runtime: `alpine:3.7` => `alpine:3.14`
 
 ## [v7] - 2016-03-05
 ### Fixed
@@ -82,7 +118,8 @@ All notable changes to this project will be documented in this file.
 - Dropped Godeps for now
 
 
-[unreleased]: https://github.com/mario-ezquerro/registrator/compare/v7...HEAD
-[v7]: https://github.com/mario-ezquerro/registrator/compare/v6...v7
-[v6]: https://github.com/mario-ezquerro/registrator/compare/v5...v6
-[v5]: https://github.com/mario-ezquerro/registrator/compare/v0.4.0...v5
+[unreleased]: https://github.com/mario-ezquerro/registrator/compare/v7.5.0...HEAD
+[v7.4.0]: https://github.com/marioezquerro/registrator/compare/v7...v7.4.0 
+[v7]: https://github.com/marioezquerro/registrator/compare/v6...v7 
+[v6]: https://github.com/marioezquerro/registrator/compare/v5...v6 
+[v5]: https://github.com/marioezquerro/registrator/compare/v0.4.0...v5

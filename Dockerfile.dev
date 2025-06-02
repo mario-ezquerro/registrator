@@ -1,13 +1,20 @@
-FROM alpine:3.17
-CMD ["/bin/registrator"]
+FROM golang:1.22-alpine3.20 AS builder
+
+# Establece el directorio de trabajo al nuevo path del módulo
+WORKDIR /go/src/github.com/mario-ezquerro/registrator/
 
 COPY . /go/src/github.com/mario-ezquerro/registrator
-RUN apk --no-cache add -t build-deps build-base go git curl \
+
+# Instala git (necesario para que Go obtenga módulos que no están en el proxy o usan git para versiones)
+# y ca-certificates (para conexiones HTTPS).
+# Compila la aplicación Go.
+# CGO_ENABLED=0 para un binario estático.
+# -ldflags para establecer la versión.
+# Salida a /bin/registrator.
+RUN apk add --no-cache git ca-certificates \
 	&& apk --no-cache add ca-certificates \
-	&& export GOPATH=/go && mkdir -p /go/bin && export PATH=$PATH:/go/bin \
-	&& curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
-	&& cd /go/src/github.com/mario-ezquerro/registrator \
-	&& export GOPATH=/go \
-	&& git config --global http.https://gopkg.in.followRedirects true \
-	&& dep ensure \
-	&& go build -ldflags "-X main.Version=dev" -o /bin/registrator
+	&& CGO_ENABLED=0 GOOS=linux go build \
+		-ldflags "-X main.Version=dev" \
+		-o /bin/registrator .
+
+CMD ["/bin/registrator"]
