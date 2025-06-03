@@ -2,12 +2,9 @@ package etcd
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"net"
-	"net/http"
 	"net/url"
-	"regexp"
 	"strconv"
 	"time"
 
@@ -22,101 +19,62 @@ func init() {
 type Factory struct{}
 
 func (f *Factory) New(uri *url.URL) bridge.RegistryAdapter {
-	urls := make([]string, 0)
+	urls := []string{"http://127.0.0.1:2379"}
 	if uri.Host != "" {
-		urls = append(urls, "http://"+uri.Host)
-	} else {
-		urls = append(urls, "http://127.0.0.1:2379")
+		urls = []string{"http://" + uri.Host}
 	}
 
-	res, err := http.Get(urls[0] + "/version")
+	config := clientv3.Config{
+		Endpoints:   urls,
+		DialTimeout: 5 * time.Second,
+	}
+
+	client, err := clientv3.New(config)
 	if err != nil {
-		log.Fatal("etcd: error retrieving version", err)
+		log.Fatal("etcd: error conectando:", err)
 	}
 
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	if match, _ := regexp.Match("0\\.4\\.*", body); match == true {
-		log.Println("etcd: using v0 client")
-		return &EtcdAdapter{client: clientv3.NewClient(urls), path: uri.Path}
-	}
-
-	return &EtcdAdapter{client2: clientv3.NewClient(urls), path: uri.Path}
+	return &EtcdAdapter{client: client, path: uri.Path}
 }
 
 type EtcdAdapter struct {
-	client  *clientv3.Client
-	client2 *clientv3.Client
+	client *clientv3.Client
 
 	path string
 }
 
 func (r *EtcdAdapter) Ping() error {
-	r.syncEtcdCluster()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
 
-	var err error
-	if r.client != nil {
-		rr := clientv3.NewRequest("GET", "version", nil, nil)
-		_, err = r.client.SendRequest(rr)
-	} else {
-		rr := clientv3.NewRequest("GET", "version", nil, nil)
-		_, err = r.client2.SendRequest(rr)
-	}
-
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *EtcdAdapter) syncEtcdCluster() {
-	var result bool
-	if r.client != nil {
-		result = r.client.SyncCluster()
-	} else {
-		result = r.client2.SyncCluster()
-	}
-
-	if !result {
-		log.Println("etcd: sync cluster was unsuccessful")
-	}
+	_, err := r.client.Get(ctx, "health")
+	return err
 }
 
 func (r *EtcdAdapter) Register(service *bridge.Service) error {
-	r.syncEtcdCluster()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
 
 	path := r.path + "/" + service.Name + "/" + service.ID
 	port := strconv.Itoa(service.Port)
 	addr := net.JoinHostPort(service.IP, port)
 
-	var err error
-	if r.client != nil {
-		_, err = r.client.Set(path, addr, uint64(service.TTL))
-	} else {
-		_, err = r.client2.Set(path, addr, uint64(service.TTL))
-	}
-
+	_, err := r.client.Put(ctx, path, addr, clientv3.WithLease(clientv3.LeaseID(service.TTL)))
 	if err != nil {
-		log.Println("etcd: failed to register service:", err)
+		log.Println("etcd: error al registrar servicio:", err)
 	}
 	return err
 }
 
 func (r *EtcdAdapter) Deregister(service *bridge.Service) error {
-	r.syncEtcdCluster()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
 
 	path := r.path + "/" + service.Name + "/" + service.ID
 
-	var err error
-	if r.client != nil {
-		_, err = r.client.Delete(path, false)
-	} else {
-		_, err = r.client2.Delete(path, false)
-	}
-
+	_, err := r.client.Delete(ctx, path)
 	if err != nil {
-		log.Println("etcd: failed to deregister service:", err)
+		log.Println("etcd: error al eliminar servicio:", err)
 	}
 	return err
 }
