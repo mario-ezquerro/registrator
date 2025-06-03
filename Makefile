@@ -21,13 +21,13 @@ release:
 		$(shell git rev-parse --abbrev-ref HEAD) $(VERSION)
 
 docs:
-	boot2docker ssh "sync; sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'" || true
-	docker run --rm -it -p 8000:8000 -v $(PWD):/work mario-ezquerro/pagebuilder mkdocs serve
-
-#circleci:
-#	rm ~/.gitconfig
-#ifneq ($(CIRCLE_BRANCH), release)
-#	echo build-$$CIRCLE_BUILD_NUM > VERSION
-#endif
+	# Usar mkdocs directamente si está instalado, o usar una imagen oficial de mkdocs
+	if command -v mkdocs >/dev/null 2>&1; then \
+		mkdocs serve; \
+	else \
+		docker run --rm -it -p 8000:8000 \
+			-v $(PWD):/docs \
+			squidfunk/mkdocs-material serve -a 0.0.0.0:8000; \
+	fi
 
 .PHONY: build release docs

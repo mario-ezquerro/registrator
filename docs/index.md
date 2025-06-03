@@ -1,12 +1,15 @@
 # Registrator
 
-Service registry bridge for Docker, sponsored by [Weave](http://weave.works).
+Service registry bridge for Docker.
 
-[![Circle CI](https://circleci.com/gh/mario-ezquerro/registrator.png?style=shield)](https://circleci.com/gh/mario-ezquerro/registrator)
+
+![GitHub stars](https://img.shields.io/github/stars/mario-ezquerro/registrator.svg?label=github%20stars&logo=github)
 [![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://registry.hub.docker.com/u/mario-ezquerro/registrator/)
-[![ImageLayers Size](https://img.shields.io/imagelayers/image-size/mario-ezquerro/registrator/latest.svg)](https://imagelayers.io/?images=mario-ezquerro%2Fregistrator:latest)
-[![IRC Channel](https://img.shields.io/badge/irc-%23mario-ezquerro-blue.svg)](https://kiwiirc.com/client/irc.freenode.net/#mario-ezquerro)
+[![External docs](https://img.shields.io/badge/docs-external--registrator-blue)]([https://url](https://mario-ezquerro.github.io/registrator/))
+[![LICENSE](https://img.shields.io/github/license/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/blob/master/LICENSE)
+[![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator)](https://hub.docker.com/r/marioezquerro/registrator/)
 <br /><br />
+
 
 Registrator automatically registers and deregisters services for any Docker
 container by inspecting containers as they come online. Registrator

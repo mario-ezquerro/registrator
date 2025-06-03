@@ -1,17 +1,49 @@
 site_name: Registrator
-site_url: https://mario-ezquerro.com/registrator
+site_description: Service registry bridge for Docker
+site_author: Mario Ezquerro
 repo_url: https://github.com/mario-ezquerro/registrator
-dev_addr: 0.0.0.0:8000
-theme_dir: /pagebuilder/theme
-google_analytics: ['UA-58928488-1', 'auto']
-pages:
-  - 'Readme': index.md
-  - 'User Guide':
-    - 'Quickstart': user/quickstart.md
-    - 'Run Reference': user/run.md
-    - 'Service Model': user/services.md
-    - 'Registry Backends': user/backends.md
-    - 'FAQ': user/faq.md
-  - 'Developer Guide':
-    - 'Contributing Backends': dev/backends.md
-    - 'Staging Releases': dev/releases.md
+
+# Tema Material moderno
+theme:
+  name: material
+  palette:
+    primary: blue
+    accent: blue
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+
+# Navegación moderna (reemplaza 'pages')
+nav:
+  - Readme: index.md
+  - User Guide:
+    - Quickstart: user/quickstart.md
+    - Run Reference: user/run.md
+    - Service Model: user/services.md
+    - Registry Backends: user/backends.md
+    - FAQ: user/faq.md
+  - Developer Guide:
+    - Contributing Backends: dev/backends.md
+    - Staging Releases: dev/releases.md
+
+# Extensiones Markdown
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - toc:
+      permalink: true
+
+# Plugins
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+# Variables extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/mario-ezquerro/registrator
