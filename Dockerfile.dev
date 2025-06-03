@@ -11,9 +11,9 @@ COPY . /go/src/github.com/mario-ezquerro/registrator
 # CGO_ENABLED=0 para un binario estático.
 # -ldflags para establecer la versión.
 # Salida a /bin/registrator.
-RUN apk add --no-cache git ca-certificates \
-	&& apk --no-cache add ca-certificates \
-	&& CGO_ENABLED=0 GOOS=linux go build \
+RUN go clean -cache -modcache && \
+    apk add --no-cache git ca-certificates && \
+	CGO_ENABLED=0 GOOS=linux go build \
 		-ldflags "-X main.Version=dev" \
 		-o /bin/registrator .
 

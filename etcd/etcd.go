@@ -1,6 +1,7 @@
 package etcd
 
 import (
+	"context"
 	"io/ioutil"
 	"log"
 	"net"
@@ -8,10 +9,10 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
+	"time"
 
-	etcd2 "github.com/coreos/go-etcd/etcd"
 	"github.com/mario-ezquerro/registrator/bridge"
-	etcd "gopkg.in/coreos/go-etcd.v0/etcd"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 func init() {
@@ -38,15 +39,15 @@ func (f *Factory) New(uri *url.URL) bridge.RegistryAdapter {
 
 	if match, _ := regexp.Match("0\\.4\\.*", body); match == true {
 		log.Println("etcd: using v0 client")
-		return &EtcdAdapter{client: etcd.NewClient(urls), path: uri.Path}
+		return &EtcdAdapter{client: clientv3.NewClient(urls), path: uri.Path}
 	}
 
-	return &EtcdAdapter{client2: etcd2.NewClient(urls), path: uri.Path}
+	return &EtcdAdapter{client2: clientv3.NewClient(urls), path: uri.Path}
 }
 
 type EtcdAdapter struct {
-	client  *etcd.Client
-	client2 *etcd2.Client
+	client  *clientv3.Client
+	client2 *clientv3.Client
 
 	path string
 }
@@ -56,10 +57,10 @@ func (r *EtcdAdapter) Ping() error {
 
 	var err error
 	if r.client != nil {
-		rr := etcd.NewRawRequest("GET", "version", nil, nil)
+		rr := clientv3.NewRequest("GET", "version", nil, nil)
 		_, err = r.client.SendRequest(rr)
 	} else {
-		rr := etcd2.NewRawRequest("GET", "version", nil, nil)
+		rr := clientv3.NewRequest("GET", "version", nil, nil)
 		_, err = r.client2.SendRequest(rr)
 	}
 
@@ -126,4 +127,47 @@ func (r *EtcdAdapter) Refresh(service *bridge.Service) error {
 
 func (r *EtcdAdapter) Services() ([]*bridge.Service, error) {
 	return []*bridge.Service{}, nil
+}
+
+// Actualizar la estructura del cliente
+type Client struct {
+	client *clientv3.Client
+}
+
+// Actualizar el constructor
+func NewClient(machines []string) (*Client, error) {
+	cfg := clientv3.Config{
+		Endpoints:   machines,
+		DialTimeout: 5 * time.Second,
+	}
+
+	c, err := clientv3.New(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{client: c}, nil
+}
+
+// Actualizar los métodos para usar el nuevo cliente
+func (c *Client) Set(key, value string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	_, err := c.client.Put(ctx, key, value)
+	return err
+}
+
+func (c *Client) Get(key string) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	resp, err := c.client.Get(ctx, key)
+	if err != nil {
+		return "", err
+	}
+	if len(resp.Kvs) == 0 {
+		return "", nil
+	}
+	return string(resp.Kvs[0].Value), nil
 }

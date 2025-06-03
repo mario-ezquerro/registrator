@@ -1,12 +1,15 @@
 package skydns2
 
 import (
+	"context"
 	"log"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
-	"github.com/coreos/go-etcd/etcd"
+	clientv3 "go.etcd.io/etcd/client/v3"
+
 	"github.com/mario-ezquerro/registrator/bridge"
 )
 
@@ -26,11 +29,11 @@ func (f *Factory) New(uri *url.URL) bridge.RegistryAdapter {
 		log.Fatal("skydns2: dns domain required e.g.: skydns2://<host>/<domain>")
 	}
 
-	return &Skydns2Adapter{client: etcd.NewClient(urls), path: domainPath(uri.Path[1:])}
+	return &Skydns2Adapter{client: NewClient(urls), path: domainPath(uri.Path[1:])}
 }
 
 type Skydns2Adapter struct {
-	client *etcd.Client
+	client *Client
 	path   string
 }
 
@@ -79,4 +82,24 @@ func domainPath(domain string) string {
 		components[i], components[j] = components[j], components[i]
 	}
 	return "/skydns/" + strings.Join(components, "/")
+}
+
+// Actualizar la estructura del cliente
+type Client struct {
+	client *clientv3.Client
+}
+
+// Actualizar el constructor
+func NewClient(machines []string) (*Client, error) {
+	cfg := clientv3.Config{
+		Endpoints:   machines,
+		DialTimeout: 5 * time.Second,
+	}
+
+	c, err := clientv3.New(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{client: c}, nil
 }
