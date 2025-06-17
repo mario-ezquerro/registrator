@@ -19,9 +19,9 @@ Full documentation available at http://mario-ezquerro.com/registrator
 
 ## Getting Registrator
 
-Get the latest release, master, or any version of Registrator via [Docker Hub](https://registry.hub.docker.com/u/mario-ezquerro/registrator/):
+Get the latest release, master, or any version of Registrator via [Docker Hub](https://hub.docker.com/repository/docker/marioezquerro/registrator/):
 
-	$ docker pull mario-ezquerro/registrator:latest
+	$ docker pull marioezquerro/registrator:latest
 
 Latest tag always points to the latest release. There is also a `:master` tag
 and version tags to pin to specific releases.
@@ -38,7 +38,7 @@ Guide. Typically, running Registrator looks like this:
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        mario-ezquerro/registrator:latest \
+        marioezquerro/registrator:latest \
           consul://localhost:8500
 
 ## CLI Options

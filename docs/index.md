@@ -19,9 +19,9 @@ supports pluggable service registries, which currently includes
 
 ## Getting Registrator
 
-Get the latest release, master, or any version of Registrator via [Docker Hub](https://registry.hub.docker.com/u/mario-ezquerro/registrator/):
+Get the latest release, master, or any version of Registrator via [Docker Hub](https://hub.docker.com/repository/docker/marioezquerro/registrator/):
 
-	$ docker pull mario-ezquerro/registrator:latest
+	$ docker pull marioezquerro/registrator:latest
 
 Latest tag always points to the latest release. There is also a `:master` tag
 and version tags to pin to specific releases.
@@ -37,13 +37,13 @@ looks like this:
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        mario-ezquerro/registrator:latest \
+        marioezquerro/registrator:latest \
           consul://localhost:8500
 
 ## Contributing
 
 Pull requests are welcome! We recommend getting feedback before starting by
-opening a [GitHub issue](https://github.com/mario-ezquerro/registrator/issues) or
+opening a [GitHub issue](https://github.com/marioezquerro/registrator/issues) or
 discussing in [Slack](http://glider-slackin.herokuapp.com/).
 
 Also check out our Developer Guide on [Contributing Backends](dev/backends.md)
@@ -56,7 +56,7 @@ Ongoing support of this project is made possible by [Weave](http://weave.works),
 for inspiration.
 
 For a full list of sponsors, see
-[SPONSORS](https://github.com/mario-ezquerro/registrator/blob/master/SPONSORS).
+[SPONSORS](https://github.com/marioezquerro/registrator/blob/master/SPONSORS).
 
 ## License
 
