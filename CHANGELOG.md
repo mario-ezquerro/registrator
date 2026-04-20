@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Added
+- Soporte para nuevas arquitecturas de microprocesadores de Apple (ARM / Apple Silicon) e Intel (x86).
+
 ## [v7.4.0]() - 2021-09-22
 ### Fixed
 - Minor code styling changes
