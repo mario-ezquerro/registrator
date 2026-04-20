@@ -4,7 +4,7 @@ DEV_RUN_OPTS ?= consul:
 DOCKER_USER ?= mario-ezquerro
 SOURCES := $(shell find . -name '*.go')
 
-.PHONY: dev build build-multiarch push-multiarch release docs circleci lint test vet fmt
+.PHONY: dev build bump-version build-multiarch push-multiarch release docs circleci lint test vet fmt
 
 dev:
 	docker build -f Dockerfile.dev -t $(NAME):dev .
@@ -12,21 +12,31 @@ dev:
 		-v /var/run/docker.sock:/tmp/docker.sock \
 		$(NAME):dev /bin/registrator $(DEV_RUN_OPTS)
 
-build: test
-	mkdir -p build
-	docker build -t $(NAME):$(VERSION) .
-	docker save $(NAME):$(VERSION) | gzip -9 > build/$(NAME)_$(VERSION).tgz
+bump-version:
+	@CURRENT_VERSION=$$(cat VERSION); \
+	FORMATTED_PREFIX=$${CURRENT_VERSION%.*}.; \
+	LAST_DIGIT=$${CURRENT_VERSION##*.}; \
+	NEW_DIGIT=$$((LAST_DIGIT + 1)); \
+	NEW_VERSION="$${FORMATTED_PREFIX}$${NEW_DIGIT}"; \
+	echo $$NEW_VERSION > VERSION; \
+	echo "Version actualizada: $$CURRENT_VERSION -> $$NEW_VERSION"
 
-build-multiarch: test
+# La regla exige que siempre que se compile se haga la version de ARM y X86
+# Y que aumente una cifra el fichero VERSION
+build: bump-version test
+	$(eval VERSION=$(shell cat VERSION))
 	mkdir -p build
 	docker buildx create --name multiarch-builder --use || true
 	docker buildx build --platform linux/amd64,linux/arm64 -t $(NAME):$(VERSION) -o type=oci,dest=build/$(NAME)_$(VERSION)_multiarch.tar .
 
-push-multiarch:
+build-multiarch: build
+
+push-multiarch: bump-version
+	$(eval VERSION=$(shell cat VERSION))
 	docker buildx create --name multiarch-builder --use || true
 	docker buildx build --platform linux/amd64,linux/arm64 -t $(DOCKER_USER)/$(NAME):$(VERSION) --push .
 
-release:
+release: push-multiarch
 	rm -rf release && mkdir release
 	go get github.com/progrium/gh-release/...
 	cp build/* release

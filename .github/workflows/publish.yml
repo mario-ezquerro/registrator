@@ -1,0 +1,47 @@
+name: Publish Docker Multi-Arch
+
+on:
+  push:
+    branches:
+      - master
+      - v7.4.0-arm-x86
+    paths-ignore:
+      - 'VERSION' # Para evitar un bucle infinito al hacer push del nuevo archivo VERSION
+  workflow_dispatch: # Para poder lanzarlo manualmente desde la web de GitHub
+
+jobs:
+  bump-build-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Necesario para hacer push a la rama
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Multi-architecture (ARM & x86)
+        env:
+          # Pasamos los credenciales al Makefile que ejecuta docker buildx push
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          # Nuestro archivo Makefile ya leerá la nueva versión usando $(shell cat VERSION)
+          # además, debido a la regla interna, hará bump automático e inyectará el tag de versión nuevo
+          # además compilará la imagen multi-arquitectura por defecto.
+          make push-multiarch
+
+      - name: Commit and Push new VERSION
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add VERSION
+          git commit -m "chore: bump version to $(cat VERSION) [skip ci]" || echo "No changes to commit"
+          git push || echo "No changes to push"
