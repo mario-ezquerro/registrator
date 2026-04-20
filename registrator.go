@@ -11,8 +11,8 @@ import (
 	"time"
 
 	dockerapi "github.com/fsouza/go-dockerclient"
-	"github.com/mario-ezquerro/pkg/usage"
-	"github.com/mario-ezquerro/registrator/bridge"
+	"github.com/gliderlabs/pkg/usage"
+	"github.com/gliderlabs/registrator/bridge"
 )
 
 var Version string

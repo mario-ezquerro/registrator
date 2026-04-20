@@ -1,15 +1,12 @@
 # Registrator
 
-Service registry bridge for Docker.
+Service registry bridge for Docker, sponsored by [Weave](http://weave.works).
 
-
-![GitHub stars](https://img.shields.io/github/stars/mario-ezquerro/registrator.svg?label=github%20stars&logo=github)
-[![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://registry.hub.docker.com/u/mario-ezquerro/registrator/)
-[![External docs](https://img.shields.io/badge/docs-external--registrator-blue)]([https://url](https://mario-ezquerro.github.io/registrator/))
-[![LICENSE](https://img.shields.io/github/license/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/blob/master/LICENSE)
-[![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator)](https://hub.docker.com/r/marioezquerro/registrator/)
+[![Circle CI](https://circleci.com/gh/gliderlabs/registrator.png?style=shield)](https://circleci.com/gh/gliderlabs/registrator)
+[![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://registry.hub.docker.com/u/gliderlabs/registrator/)
+[![ImageLayers Size](https://img.shields.io/imagelayers/image-size/gliderlabs/registrator/latest.svg)](https://imagelayers.io/?images=gliderlabs%2Fregistrator:latest)
+[![IRC Channel](https://img.shields.io/badge/irc-%23gliderlabs-blue.svg)](https://kiwiirc.com/client/irc.freenode.net/#gliderlabs)
 <br /><br />
-
 
 Registrator automatically registers and deregisters services for any Docker
 container by inspecting containers as they come online. Registrator
@@ -19,9 +16,9 @@ supports pluggable service registries, which currently includes
 
 ## Getting Registrator
 
-Get the latest release, master, or any version of Registrator via [Docker Hub](https://hub.docker.com/repository/docker/marioezquerro/registrator/):
+Get the latest release, master, or any version of Registrator via [Docker Hub](https://registry.hub.docker.com/u/gliderlabs/registrator/):
 
-	$ docker pull marioezquerro/registrator:latest
+	$ docker pull gliderlabs/registrator:latest
 
 Latest tag always points to the latest release. There is also a `:master` tag
 and version tags to pin to specific releases.
@@ -37,13 +34,13 @@ looks like this:
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        marioezquerro/registrator:latest \
+        gliderlabs/registrator:latest \
           consul://localhost:8500
 
 ## Contributing
 
 Pull requests are welcome! We recommend getting feedback before starting by
-opening a [GitHub issue](https://github.com/marioezquerro/registrator/issues) or
+opening a [GitHub issue](https://github.com/gliderlabs/registrator/issues) or
 discussing in [Slack](http://glider-slackin.herokuapp.com/).
 
 Also check out our Developer Guide on [Contributing Backends](dev/backends.md)
@@ -56,7 +53,7 @@ Ongoing support of this project is made possible by [Weave](http://weave.works),
 for inspiration.
 
 For a full list of sponsors, see
-[SPONSORS](https://github.com/marioezquerro/registrator/blob/master/SPONSORS).
+[SPONSORS](https://github.com/gliderlabs/registrator/blob/master/SPONSORS).
 
 ## License
 

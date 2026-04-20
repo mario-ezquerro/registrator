@@ -13,21 +13,35 @@ build:
 	docker build -t $(NAME):$(VERSION) .
 	docker save $(NAME):$(VERSION) | gzip -9 > build/$(NAME)_$(VERSION).tgz
 
+build-multiarch:
+	mkdir -p build
+	docker buildx create --name multiarch-builder --use || true
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(NAME):$(VERSION) -o type=oci,dest=build/$(NAME)_$(VERSION)_multiarch.tar .
+
+push-multiarch:
+	@if [ -z "$(DOCKER_USER)" ]; then \
+		echo "Error: DOCKER_USER is missing."; \
+		echo "Please run: make push-multiarch DOCKER_USER=tu_usuario_de_docker"; \
+		exit 1; \
+	fi
+	docker buildx create --name multiarch-builder --use || true
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(DOCKER_USER)/$(NAME):$(VERSION) --push .
+
 release:
 	rm -rf release && mkdir release
-	go install github.com/progrium/gh-release@latest
+	go get github.com/progrium/gh-release/...
 	cp build/* release
-	gh-release create mario-ezquerro/$(NAME) $(VERSION) \
+	gh-release create gliderlabs/$(NAME) $(VERSION) \
 		$(shell git rev-parse --abbrev-ref HEAD) $(VERSION)
 
 docs:
-	# Usar mkdocs directamente si está instalado, o usar una imagen oficial de mkdocs
-	if command -v mkdocs >/dev/null 2>&1; then \
-		mkdocs serve; \
-	else \
-		docker run --rm -it -p 8000:8000 \
-			-v $(PWD):/docs \
-			squidfunk/mkdocs-material serve -a 0.0.0.0:8000; \
-	fi
+	boot2docker ssh "sync; sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'" || true
+	docker run --rm -it -p 8000:8000 -v $(PWD):/work gliderlabs/pagebuilder mkdocs serve
 
-.PHONY: build release docs
+circleci:
+	rm ~/.gitconfig
+ifneq ($(CIRCLE_BRANCH), release)
+	echo build-$$CIRCLE_BUILD_NUM > VERSION
+endif
+
+.PHONY: build build-multiarch release docs

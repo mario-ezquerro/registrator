@@ -2,11 +2,9 @@
 
 Service registry bridge for Docker.
 
-![GitHub stars](https://img.shields.io/github/stars/mario-ezquerro/registrator.svg?label=github%20stars&logo=github)
-[![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://registry.hub.docker.com/u/mario-ezquerro/registrator/)
-[![External docs](https://img.shields.io/badge/docs-external--registrator-blue)]([https://url](https://mario-ezquerro.github.io/registrator/))
-[![LICENSE](https://img.shields.io/github/license/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/blob/master/LICENSE)
-[![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator)](https://hub.docker.com/r/marioezquerro/registrator/)
+[![Circle CI](https://circleci.com/gh/gliderlabs/registrator.png?style=shield)](https://circleci.com/gh/gliderlabs/registrator)
+[![Docker pulls](https://img.shields.io/docker/pulls/gliderlabs/registrator.svg)](https://hub.docker.com/r/gliderlabs/registrator/)
+[![IRC Channel](https://img.shields.io/badge/irc-%23gliderlabs-blue.svg)](https://kiwiirc.com/client/irc.freenode.net/#gliderlabs)
 <br /><br />
 
 Registrator automatically registers and deregisters services for any Docker
@@ -15,13 +13,13 @@ supports pluggable service registries, which currently includes
 [Consul](http://www.consul.io/), [etcd](https://github.com/coreos/etcd) and
 [SkyDNS 2](https://github.com/skynetservices/skydns/).
 
-Full documentation available at http://mario-ezquerro.com/registrator
+Full documentation available at http://gliderlabs.com/registrator
 
 ## Getting Registrator
 
-Get the latest release, master, or any version of Registrator via [Docker Hub](https://hub.docker.com/repository/docker/marioezquerro/registrator/):
+Get the latest release, master, or any version of Registrator via [Docker Hub](https://registry.hub.docker.com/u/gliderlabs/registrator/):
 
-	$ docker pull marioezquerro/registrator:latest
+	$ docker pull gliderlabs/registrator:latest
 
 Latest tag always points to the latest release. There is also a `:master` tag
 and version tags to pin to specific releases.
@@ -29,16 +27,16 @@ and version tags to pin to specific releases.
 ## Using Registrator
 
 The quickest way to see Registrator in action is our
-[Quickstart](https://mario-ezquerro.com/registrator/latest/user/quickstart)
+[Quickstart](https://gliderlabs.com/registrator/latest/user/quickstart)
 tutorial. Otherwise, jump to the [Run
-Reference](https://mario-ezquerro.com/registrator/latest/user/run) in the User
+Reference](https://gliderlabs.com/registrator/latest/user/run) in the User
 Guide. Typically, running Registrator looks like this:
 
     $ docker run -d \
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        marioezquerro/registrator:latest \
+        marioezquerro/registrator:v7.4.0 \
           consul://localhost:8500
 
 ## CLI Options
@@ -62,12 +60,12 @@ Usage of /bin/registrator:
 ## Contributing
 
 Pull requests are welcome! We recommend getting feedback before starting by
-opening a [GitHub issue](https://github.com/mario-ezquerro/registrator/issues) or
+opening a [GitHub issue](https://github.com/gliderlabs/registrator/issues) or
 discussing in [Slack](http://glider-slackin.herokuapp.com/).
 
 Also check out our Developer Guide on [Contributing
-Backends](https://mario-ezquerro.com/registrator/latest/dev/backends) and [Staging
-Releases](https://mario-ezquerro.com/registrator/latest/dev/releases).
+Backends](https://gliderlabs.com/registrator/latest/dev/backends) and [Staging
+Releases](https://gliderlabs.com/registrator/latest/dev/releases).
 
 ## Sponsors and Thanks
 
@@ -76,7 +74,7 @@ Big thanks to Weave for sponsoring, Michael Crosby for
 for inspiration.
 
 For a full list of sponsors, see
-[SPONSORS](https://github.com/mario-ezquerro/registrator/blob/master/SPONSORS).
+[SPONSORS](https://github.com/gliderlabs/registrator/blob/master/SPONSORS).
 
 ## License
 
