@@ -1,13 +1,17 @@
-FROM alpine:3.7
-CMD ["/bin/registrator"]
+FROM golang:1.17.1-alpine3.14
 
-COPY . /go/src/github.com/gliderlabs/registrator
-RUN apk --no-cache add -t build-deps build-base go git curl \
-	&& apk --no-cache add ca-certificates \
-	&& export GOPATH=/go && mkdir -p /go/bin && export PATH=$PATH:/go/bin \
-	&& curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
-	&& cd /go/src/github.com/gliderlabs/registrator \
-	&& export GOPATH=/go \
-	&& git config --global http.https://gopkg.in.followRedirects true \
-	&& dep ensure \
-	&& go build -ldflags "-X main.Version=dev" -o /bin/registrator
+# Instalar dependencias del sistema necesarias
+RUN apk add --no-cache bash git ca-certificates tzdata
+
+WORKDIR /go/src/github.com/mario-ezquerro/registrator/
+
+# Cachear módulos de go por separado
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+# Compilar para entorno de desarrollo (sin optimizaciones de release)
+RUN go build -ldflags "-X main.Version=dev" -o /bin/registrator .
+
+CMD ["/bin/registrator"]

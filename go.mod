@@ -1,4 +1,4 @@
-module github.com/gliderlabs/registrator
+module github.com/mario-ezquerro/registrator
 
 go 1.17
 

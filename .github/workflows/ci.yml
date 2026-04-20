@@ -1,0 +1,34 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+      - v7.4.0-arm-x86
+  pull_request:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.17'
+
+      - name: Go Format and Vet
+        run: |
+          go mod tidy
+          make vet
+
+      - name: Test
+        run: make test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Multi-arch Container (Dry Run)
+        run: make build-multiarch
