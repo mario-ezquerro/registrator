@@ -2,7 +2,12 @@
 
 Service registry bridge for Docker.
 
+[![CI/CD Pipeline](https://github.com/mario-ezquerro/registrator/actions/workflows/ci.yml/badge.svg)](https://github.com/mario-ezquerro/registrator/actions)
+[![Go Version](https://img.shields.io/badge/Go-1.25-blue.svg?style=shield&logo=go)](https://go.dev/)
 [![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator.svg)](https://hub.docker.com/r/marioezquerro/registrator/)
+[![GitHub release](https://img.shields.io/github/release/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/releases)
+[![License](https://img.shields.io/github/license/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/blob/master/LICENSE)
+[![Platforms](https://img.shields.io/badge/platform-linux%2Famd64%20%7C%20linux%2Farm64-lightgrey)](https://hub.docker.com/r/marioezquerro/registrator/tags)
 <br /><br />
 
 Registrator automatically registers and deregisters services for any Docker
