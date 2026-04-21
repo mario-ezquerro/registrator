@@ -16,13 +16,13 @@ var registry = struct {
 type extensionPoint struct {
 	sync.Mutex
 	iface      reflect.Type
-	components map[string]interface{}
+	components map[string]any
 }
 
-func newExtensionPoint(iface interface{}) *extensionPoint {
+func newExtensionPoint(iface any) *extensionPoint {
 	ep := &extensionPoint{
 		iface:      reflect.TypeOf(iface).Elem(),
-		components: make(map[string]interface{}),
+		components: make(map[string]any),
 	}
 	registry.Lock()
 	defer registry.Unlock()
@@ -30,24 +30,24 @@ func newExtensionPoint(iface interface{}) *extensionPoint {
 	return ep
 }
 
-func (ep *extensionPoint) lookup(name string) (ext interface{}, ok bool) {
+func (ep *extensionPoint) lookup(name string) (ext any, ok bool) {
 	ep.Lock()
 	defer ep.Unlock()
 	ext, ok = ep.components[name]
 	return
 }
 
-func (ep *extensionPoint) all() map[string]interface{} {
+func (ep *extensionPoint) all() map[string]any {
 	ep.Lock()
 	defer ep.Unlock()
-	all := make(map[string]interface{})
+	all := make(map[string]any)
 	for k, v := range ep.components {
 		all[k] = v
 	}
 	return all
 }
 
-func (ep *extensionPoint) register(component interface{}, name string) bool {
+func (ep *extensionPoint) register(component any, name string) bool {
 	ep.Lock()
 	defer ep.Unlock()
 	if name == "" {
@@ -72,7 +72,7 @@ func (ep *extensionPoint) unregister(name string) bool {
 	return true
 }
 
-func implements(component interface{}) []string {
+func implements(component any) []string {
 	var ifaces []string
 	for name, ep := range registry.extpoints {
 		if reflect.TypeOf(component).Implements(ep.iface) {
@@ -82,7 +82,7 @@ func implements(component interface{}) []string {
 	return ifaces
 }
 
-func Register(component interface{}, name string) []string {
+func Register(component any, name string) []string {
 	registry.Lock()
 	defer registry.Unlock()
 	var ifaces []string

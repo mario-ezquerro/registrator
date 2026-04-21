@@ -3,7 +3,7 @@ package bridge
 import (
 	"bytes"
 	"errors"
-	"io/ioutil"
+	"io"
 	"log"
 	"net"
 	"net/http"
@@ -599,7 +599,7 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 					return []byte("")
 				}
 
-				body, err := ioutil.ReadAll(res.Body)
+				body, err := io.ReadAll(res.Body)
 				res.Body.Close()
 				if err != nil {
 					log.Printf("httpGet template function encountered an error while reading HTTP body payload: %v", err)
