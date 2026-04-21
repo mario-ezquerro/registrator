@@ -33,11 +33,24 @@ Reference](https://gliderlabs.com/registrator/latest/user/run) in the User
 Guide. Typically, running Registrator looks like this:
 
     $ docker run -d \
+        --rm \
+        --name=consul-server \
+        -p 8500:8500 \
+        -p 8600:8600/udp \
+        hashicorp/consul:latest \
+        agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 -data-dir=/consul/data
+
+Connect with a browser to http://localhost:8500 and then run the following command:
+
+    $ docker run -d \
+        --rm \
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        marioezquerro/registrator:v7.4.0 \
+        marioezquerro/registrator:v7.4.1 \
           consul://localhost:8500
+
+Confirm the registration in the browser at http://localhost:8500 and you should see the consul-server service registered.
 
 ## CLI Options
 ```
