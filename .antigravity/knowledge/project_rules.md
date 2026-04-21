@@ -9,6 +9,7 @@ Estas reglas están diseñadas para guiar a asistentes de Inteligencia Artificia
 ## Convenciones de Desarrollo (Importante)
 - **Ejecución Local**: Es posible que no haya binarios de `go` ni `docker` en el host (como ya se ha verificado). De presentarse un error al ejecutar validaciones (por ejemplo, `command not found: docker` o `command not found: go`), notifica al usuario que delegarás la prueba a su infraestructura o a él mismo.
 - **Compilación Multi-Arquitectura**: Este proyecto da soporte completo a `ARM` (Apple Silicon) e `Intel` (x86). Cuando se creen o modifiquen flujos de release, SIEMPRE usar los targets multi-arquitectura como están fijados en el archivo `Makefile` (`make build-multiarch`).
+- **Control de Versiones Estricto (aumento-version.md)**: CADA VEZ que se solicita compilar o construir una nueva imagen de Docker del proyecto, es obligatorio e innegociable *Aumentar en una cifra el valor del fichero VERSION*. Este valor es embebido físicamente en el binario compilado de Go mediante las directivas del compilador (`-ldflags "-X main.Version=..."`) y debe corresponderse sistemáticamente en el "TAG" de las imágenes Docker (p. ej., `v7.4.0` -> `v7.4.1`). Usa siempre que puedas el comando `make bump-version`.
 - **Imports Nativos**: El módulo base es `github.com/mario-ezquerro/registrator`. No uses nunca más el antiguo `gliderlabs`. Si añades código Go de este mismo repositorio, asegúrate de utilizar el formato `github.com/mario-ezquerro/registrator/...`
 
 ## Makefile

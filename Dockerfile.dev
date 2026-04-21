@@ -9,6 +9,6 @@ WORKDIR /go/src/github.com/mario-ezquerro/registrator/
 COPY . .
 
 # Compilar para entorno de desarrollo (con la carpeta local vendor)
-RUN go build -mod=vendor -ldflags "-X main.Version=dev" -o /bin/registrator .
+RUN go build -mod=vendor -ldflags "-X main.Version=$(cat VERSION)-dev" -o /bin/registrator .
 
 CMD ["/bin/registrator"]
