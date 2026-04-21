@@ -5,13 +5,10 @@ RUN apk add --no-cache bash git ca-certificates tzdata
 
 WORKDIR /go/src/github.com/mario-ezquerro/registrator/
 
-# Cachear módulos de go por separado
-COPY go.mod go.sum ./
-RUN go mod download
-
+# Ya no necesitamos descargar dependencias online porque usaremos la carpeta /vendor local
 COPY . .
 
-# Compilar para entorno de desarrollo (sin optimizaciones de release)
-RUN go build -ldflags "-X main.Version=dev" -o /bin/registrator .
+# Compilar para entorno de desarrollo (con la carpeta local vendor)
+RUN go build -mod=vendor -ldflags "-X main.Version=dev" -o /bin/registrator .
 
 CMD ["/bin/registrator"]
