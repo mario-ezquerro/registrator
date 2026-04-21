@@ -2,9 +2,7 @@
 
 Service registry bridge for Docker.
 
-[![Circle CI](https://circleci.com/gh/gliderlabs/registrator.png?style=shield)](https://circleci.com/gh/gliderlabs/registrator)
-[![Docker pulls](https://img.shields.io/docker/pulls/gliderlabs/registrator.svg)](https://hub.docker.com/r/gliderlabs/registrator/)
-[![IRC Channel](https://img.shields.io/badge/irc-%23gliderlabs-blue.svg)](https://kiwiirc.com/client/irc.freenode.net/#gliderlabs)
+[![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator.svg)](https://hub.docker.com/r/marioezquerro/registrator/)
 <br /><br />
 
 Registrator automatically registers and deregisters services for any Docker
@@ -13,13 +11,13 @@ supports pluggable service registries, which currently includes
 [Consul](http://www.consul.io/), [etcd](https://github.com/coreos/etcd) and
 [SkyDNS 2](https://github.com/skynetservices/skydns/).
 
-Full documentation available at http://gliderlabs.com/registrator
+Full documentation available at https://github.com/mario-ezquerro/registrator
 
 ## Getting Registrator
 
-Get the latest release, master, or any version of Registrator via [Docker Hub](https://registry.hub.docker.com/u/gliderlabs/registrator/):
+Get the latest release, master, or any version of Registrator via [Docker Hub](https://hub.docker.com/r/marioezquerro/registrator):
 
-	$ docker pull gliderlabs/registrator:latest
+	$ docker pull marioezquerro/registrator:latest
 
 Latest tag always points to the latest release. There is also a `:master` tag
 and version tags to pin to specific releases.
@@ -27,9 +25,9 @@ and version tags to pin to specific releases.
 ## Using Registrator
 
 The quickest way to see Registrator in action is our
-[Quickstart](https://gliderlabs.com/registrator/latest/user/quickstart)
+[Quickstart](https://github.com/mario-ezquerro/registrator/blob/master/README.md)
 tutorial. Otherwise, jump to the [Run
-Reference](https://gliderlabs.com/registrator/latest/user/run) in the User
+Reference](https://github.com/mario-ezquerro/registrator/blob/master/README.md) in the User
 Guide. Typically, running Registrator looks like this:
 
     $ docker run -d \
@@ -73,12 +71,9 @@ Usage of /bin/registrator:
 ## Contributing
 
 Pull requests are welcome! We recommend getting feedback before starting by
-opening a [GitHub issue](https://github.com/gliderlabs/registrator/issues) or
-discussing in [Slack](http://glider-slackin.herokuapp.com/).
+opening a [GitHub issue](https://github.com/mario-ezquerro/registrator/issues).
 
-Also check out our Developer Guide on [Contributing
-Backends](https://gliderlabs.com/registrator/latest/dev/backends) and [Staging
-Releases](https://gliderlabs.com/registrator/latest/dev/releases).
+Also check out our Developer Guide.
 
 ## Sponsors and Thanks
 
@@ -87,7 +82,7 @@ Big thanks to Weave for sponsoring, Michael Crosby for
 for inspiration.
 
 For a full list of sponsors, see
-[SPONSORS](https://github.com/gliderlabs/registrator/blob/master/SPONSORS).
+[SPONSORS](https://github.com/mario-ezquerro/registrator/blob/master/SPONSORS).
 
 ## License
 
