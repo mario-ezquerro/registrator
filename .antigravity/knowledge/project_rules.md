@@ -3,7 +3,7 @@
 Estas reglas están diseñadas para guiar a asistentes de Inteligencia Artificial al interactuar con el repositorio.
 
 ## Stack
-- Go 1.17
+- Go 1.25
 - Docker (Multi-stage build)
 
 ## Convenciones de Desarrollo (Importante)
@@ -24,3 +24,16 @@ Al interactuar o modificar la configuración de Docker, respeta estas reglas:
 - **Imágenes Ligeras (Alpine)**: Para la imagen de producción/ejecución, básate siempre en distribuciones mínimas y seguras como `alpine` (por ejemplo, `alpine:3.14`). Asegúrate de inyectar dependencias globales de seguridad básica como `ca-certificates` y zona horaria (`tzdata`).
 - **Archivo .dockerignore**: Mantén siempre actualizado un `.dockerignore` evitando enviar el `.git/`, builds antiguos y vendors al daemon de Docker; agilizará muchísimo la compilación.
 - **Etiquetas Absolutas**: Nunca uses etiquetas como `:latest` o similares indiscriminadamente para constructores (builders). Usa la versión predecible de alpine como `golang:X.XX.X-alpineX.X`.
+
+## Mejores Prácticas de API (OpenAPI)
+Para el diseño y mantenimiento de APIs y sus descripciones OpenAPI (OAD):
+- **Enfoque Design-First**: Diseña la descripción de la API (OAD) antes de implementar el código. Esto asegura que se respeten las capacidades de OpenAPI y facilita el uso de herramientas automatizadas.
+- **Fuente Única de Verdad**: Evita la duplicación. Si la descripción se genera desde el código, asegura que ambos estén sincronizados mediante CI. Una vez modificado un archivo manualmente, este se convierte en la nueva "verdad".
+- **Control de Versiones**: Los archivos OAD son código de primera clase. Deben estar en el repositorio y participar en los flujos de integración continua (CI).
+- **Accesibilidad**: Haz que la descripción de la API esté disponible para los usuarios (p. ej. para generar sus propios clientes).
+- **Uso de Herramientas**: No escribas YAML/JSON a mano en proyectos grandes. Usa editores específicos, DSLs o anotaciones de código según convenga.
+- **Organización y DRY**:
+    - Usa `$ref` para reutilizar componentes y evitar redundancias.
+    - Divide descripciones grandes en varios documentos siguiendo la jerarquía de URLs.
+    - Utiliza `tags` (etiquetas) para organizar las operaciones lógicamente.
+
