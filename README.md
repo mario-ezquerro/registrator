@@ -47,7 +47,7 @@ Connect with a browser to http://localhost:8500 and then run the following comma
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        marioezquerro/registrator:v7.4.1 \
+        marioezquerro/registrator:v7.4.5 \
           consul://localhost:8500
 
 Confirm the registration in the browser at http://localhost:8500 and you should see the consul-server service registered.

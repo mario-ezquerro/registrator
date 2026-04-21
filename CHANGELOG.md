@@ -1,9 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v7.4.5] - 2026-04-21
 ### Added
-- Soporte para nuevas arquitecturas de microprocesadores de Apple (ARM / Apple Silicon) e Intel (x86).
+- Full support for multi-architecture builds (linux/amd64, linux/arm64) using Docker Buildx.
+- Project modernization and alignment with Go 1.25 standards.
+
+### Changed
+- Migrated Go version from 1.17 to 1.25.
+- Updated base images for builder (golang:1.25-alpine3.23) and runtime (alpine:3.23).
+- Refactored codebase to use modern Go patterns (e.g., replacing deprecated `io/ioutil` with `io` and `os`, and using `any` instead of `interface{}`).
+- **Major Dependency Updates**:
+    - `github.com/fsouza/go-dockerclient` updated to v1.12.3.
+    - `github.com/hashicorp/consul/api` updated to v1.34.1.
+    - `github.com/cenkalti/backoff` updated to v4.3.0.
 
 ## [v7.4.0]() - 2021-09-22
 ### Fixed
@@ -107,7 +117,8 @@ All notable changes to this project will be documented in this file.
 - Dropped Godeps for now
 
 
-[unreleased]: https://github.com/gliderlabs/registrator/compare/v7...HEAD
+[unreleased]: https://github.com/gliderlabs/registrator/compare/v7.4.5...HEAD
+[v7.4.5]: https://github.com/gliderlabs/registrator/compare/v7.4.0...v7.4.5
 [v7]: https://github.com/gliderlabs/registrator/compare/v6...v7
 [v6]: https://github.com/gliderlabs/registrator/compare/v5...v6
 [v5]: https://github.com/gliderlabs/registrator/compare/v0.4.0...v5
