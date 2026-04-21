@@ -1,4 +1,4 @@
-FROM golang:1.17.1-alpine3.14 AS builder
+FROM golang:1.25-alpine3.23 AS builder
 
 WORKDIR /go/src/github.com/mario-ezquerro/registrator/
 
@@ -14,7 +14,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor \
 		-o bin/registrator \
 		.
 
-FROM alpine:3.14
+FROM alpine:3.23
 RUN apk add --no-cache ca-certificates tzdata
 COPY --from=builder /go/src/github.com/mario-ezquerro/registrator/bin/registrator /bin/registrator
 
