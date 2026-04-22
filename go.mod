@@ -3,7 +3,7 @@ module github.com/mario-ezquerro/registrator
 go 1.25.9
 
 require (
-	github.com/buger/jsonparser v1.1.1
+	github.com/buger/jsonparser v1.1.2
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/coreos/go-etcd v2.0.0+incompatible
 	github.com/fsouza/go-dockerclient v1.13.1
