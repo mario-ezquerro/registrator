@@ -1,0 +1,59 @@
+name: Publish Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'README.md'
+      - 'VERSION'
+  workflow_dispatch: # Permite lanzarlo manualmente desde GitHub
+
+permissions:
+  contents: write # Necesario para hacer push a gh-pages
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necesario para que mkdocs gh-deploy funcione correctamente
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs and Material theme
+        run: |
+          pip install mkdocs mkdocs-material
+
+      - name: Read VERSION
+        id: version
+        run: |
+          VERSION=$(cat VERSION | tr -d '[:space:]')
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Update docs/index.md from README.md + version
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          # Copia el README.md al index de docs y añade la línea de versión al final
+          cp README.md docs/index.md
+          echo "" >> docs/index.md
+          echo "---" >> docs/index.md
+          echo "" >> docs/index.md
+          echo "> **Versión actual:** \`${VERSION}\`" >> docs/index.md
+
+      - name: Configure Git for gh-pages push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Deploy MkDocs to gh-pages
+        run: |
+          mkdocs gh-deploy --force --clean --verbose
