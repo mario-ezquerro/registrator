@@ -8,7 +8,8 @@ on:
       - 'docs/**'
       - 'mkdocs.yml'
       - 'README.md'
-      - 'VERSION'
+      # VERSION excluido: publish.yml ya hace push con [skip ci] pero
+      # evitamos el doble trigger para no crear un bucle de workflows
   workflow_dispatch: # Permite lanzarlo manualmente desde GitHub
 
 permissions:
@@ -22,7 +23,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Necesario para que mkdocs gh-deploy funcione correctamente
+          fetch-depth: 0 # Necesario para que mkdocs gh-deploy gestione el historial de gh-pages
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -38,22 +39,29 @@ jobs:
         run: |
           VERSION=$(cat VERSION | tr -d '[:space:]')
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "VERSION leída: ${VERSION}"
 
-      - name: Update docs/index.md from README.md + version
+      - name: Build docs/index.md from README.md + versión actual
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          # Copia el README.md al index de docs y añade la línea de versión al final
           cp README.md docs/index.md
-          echo "" >> docs/index.md
-          echo "---" >> docs/index.md
-          echo "" >> docs/index.md
-          echo "> **Versión actual:** \`${VERSION}\`" >> docs/index.md
+          printf '\n---\n\n> **Versión actual:** `%s`\n' "${VERSION}" >> docs/index.md
+          echo "docs/index.md generado correctamente con versión ${VERSION}"
 
-      - name: Configure Git for gh-pages push
+      - name: Configure Git identity
         run: |
-          git config --global user.name 'github-actions[bot]'
+          git config --global user.name  'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Deploy MkDocs to gh-pages
+      - name: Set authenticated remote URL
+        # mkdocs gh-deploy hace un git push interno; hay que inyectar
+        # el GITHUB_TOKEN en la URL para que la autenticación funcione.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
+
+      - name: Deploy MkDocs → rama gh-pages
         run: |
           mkdocs gh-deploy --force --clean --verbose
