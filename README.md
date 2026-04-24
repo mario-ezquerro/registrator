@@ -92,6 +92,3 @@ For a full list of sponsors, see
 ## License
 
 MIT
-
-<img src="https://ga-beacon.appspot.com/UA-58928488-2/registrator/readme?pixel" />
-
