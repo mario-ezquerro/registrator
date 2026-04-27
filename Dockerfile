@@ -2,8 +2,8 @@ FROM golang:1.25-alpine AS builder
 
 WORKDIR /go/src/github.com/mario-ezquerro/registrator/
 
-# Instalar dependencias del sistema
-RUN apk add --no-cache git
+# Instalar dependencias del sistema y actualizar paquetes base para evitar CVEs
+RUN apk upgrade --no-cache && apk add --no-cache git
 
 # Copiar todo el código (incluyendo la carpeta local /vendor generada)
 COPY . .
@@ -15,7 +15,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor \
 		.
 
 FROM alpine:3.23.4
-RUN apk add --no-cache ca-certificates tzdata
+RUN apk upgrade --no-cache && apk add --no-cache ca-certificates tzdata
 COPY --from=builder /go/src/github.com/mario-ezquerro/registrator/bin/registrator /bin/registrator
 
 ENTRYPOINT ["/bin/registrator"]
