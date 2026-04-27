@@ -2,3 +2,6 @@
 build
 release
 #vendor  queremos tener copia de las dependencias en el repositorio para que funcione el dockerfile sin internet o si estas se borran
+
+/site
+/venv
