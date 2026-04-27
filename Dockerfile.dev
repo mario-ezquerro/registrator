@@ -1,7 +1,7 @@
 FROM golang:1.25-alpine
 
 # Instalar dependencias del sistema necesarias y actualizar paquetes base
-RUN apk upgrade --no-cache && apk add --no-cache bash git ca-certificates tzdata
+RUN apk upgrade --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main busybox alpine-baselayout apk-tools && apk add --no-cache bash git ca-certificates tzdata
 
 WORKDIR /go/src/github.com/mario-ezquerro/registrator/
 
