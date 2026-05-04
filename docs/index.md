@@ -63,6 +63,7 @@ Usage of /bin/registrator:
   -cleanup=false: Remove dangling services
   -deregister="always": Deregister exited services "always" or "on-success"
   -explicit=false: Only register containers which have SERVICE_NAME label set
+  -healthcheck-port=0: Port for the health check server (e.g. 8080). 0 disables it.
   -internal=false: Use internal ports instead of published ones
   -ip="": IP for ports mapped to the host
   -resync=0: Frequency with which services are resynchronized
@@ -71,6 +72,47 @@ Usage of /bin/registrator:
   -tags="": Append tags for all registered services (supports Go template)
   -ttl=0: TTL for services (default is no expiry)
   -ttl-refresh=0: Frequency with which service TTLs are refreshed
+```
+
+## Health Check (OpenTelemetry Compatible)
+
+Registrator includes a built-in health check HTTP server that is compatible with standard probes and OpenTelemetry requirements (e.g. the `httpcheck` receiver).
+
+To enable it, pass the `-healthcheck-port=<port>` flag. This will start an HTTP server on that port, exposing two endpoints (`/` and `/health`) that return HTTP 200 with a JSON status and metadata.
+
+The response includes the status and internal metrics (CPU load and memory usage) useful for telemetry:
+```json
+{
+  "status": "UP",
+  "metrics": {
+    "cpu_load_15m": "0.05",
+    "cpu_load_1m": "0.00",
+    "cpu_load_5m": "0.01",
+    "cpus": 4,
+    "goroutines": 12,
+    "memory_alloc_bytes": 1423456,
+    "memory_sys_bytes": 6234567
+  }
+}
+```
+
+Example configuration in `docker-compose.yml` to specify the port and frequency of the health check:
+```yaml
+version: '3.8'
+
+services:
+  registrator:
+    image: marioezquerro/registrator:v7.4.23
+    command: -healthcheck-port=8080 consul://consul:8500
+    network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
 ```
 
 ## Contributing
@@ -98,4 +140,4 @@ MIT
 
 ---
 
-> **Versión actual:** `v7.4.11`
+> **Versión actual:** `v7.4.23`

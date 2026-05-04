@@ -9,10 +9,12 @@ import (
 	"runtime"
 	"strings"
 	"time"
+	"net/http"
 
 	dockerapi "github.com/fsouza/go-dockerclient"
 	"github.com/gliderlabs/pkg/usage"
 	"github.com/mario-ezquerro/registrator/bridge"
+	"encoding/json"
 )
 
 var Version string
@@ -31,6 +33,7 @@ var deregister = flag.String("deregister", "always", "Deregister exited services
 var retryAttempts = flag.Int("retry-attempts", 0, "Max retry attempts to establish a connection with the backend. Use -1 for infinite retries")
 var retryInterval = flag.Int("retry-interval", 2000, "Interval (in millisecond) between retry-attempts.")
 var cleanup = flag.Bool("cleanup", false, "Remove dangling services")
+var healthcheckPort = flag.Int("healthcheck-port", 0, "Port for the health check server (e.g. 8080). 0 disables it.")
 
 func getopt(name, def string) string {
 	if env := os.Getenv(name); env != "" {
@@ -70,6 +73,50 @@ func main() {
 		}
 		flag.Usage()
 		os.Exit(2)
+	}
+
+	// Start the health check server early so it's available even if backend connection retries
+	if *healthcheckPort > 0 {
+		go func() {
+			handler := func(w http.ResponseWriter, r *http.Request) {
+				var m runtime.MemStats
+				runtime.ReadMemStats(&m)
+
+				metrics := map[string]interface{}{
+					"memory_alloc_bytes": m.Alloc,
+					"memory_sys_bytes":   m.Sys,
+					"goroutines":         runtime.NumGoroutine(),
+					"cpus":               runtime.NumCPU(),
+				}
+
+				if data, err := os.ReadFile("/proc/loadavg"); err == nil {
+					parts := strings.Fields(string(data))
+					if len(parts) >= 3 {
+						metrics["cpu_load_1m"] = parts[0]
+						metrics["cpu_load_5m"] = parts[1]
+						metrics["cpu_load_15m"] = parts[2]
+					}
+				}
+
+				response := map[string]interface{}{
+					"status":  "UP",
+					"metrics": metrics,
+				}
+
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+				json.NewEncoder(w).Encode(response)
+			}
+
+			http.HandleFunc("/health", handler)
+			http.HandleFunc("/", handler)
+
+			log.Printf("Starting health check server on port %d", *healthcheckPort)
+			err := http.ListenAndServe(fmt.Sprintf(":%d", *healthcheckPort), nil)
+			if err != nil {
+				log.Printf("Health check server failed: %v", err)
+			}
+		}()
 	}
 
 	if *hostIp != "" {
