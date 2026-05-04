@@ -101,16 +101,24 @@ Example configuration in `docker-compose.yml` to specify the port and frequency 
 version: '3.8'
 
 services:
+  consul:
+    image: hashicorp/consul:latest
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+
   registrator:
     image: marioezquerro/registrator:v7.4.23
-    command: -healthcheck-port=8080 consul://consul:8500
-    network_mode: "host"
+    command: -healthcheck-port=8080 -retry-attempts -1 consul://consul:8500
+    depends_on:
+      - consul
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:8080/health || exit 1"]
-      interval: 30s
-      timeout: 10s
+      interval: 10s
+      timeout: 5s
       retries: 3
       start_period: 5s
 ```
