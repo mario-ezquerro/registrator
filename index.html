@@ -351,6 +351,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#health-check-opentelemetry-compatible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health Check (OpenTelemetry Compatible)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -766,6 +777,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#health-check-opentelemetry-compatible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health Check (OpenTelemetry Compatible)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -881,6 +903,7 @@ Guide. Typically, running Registrator looks like this:</p>
   -cleanup=false: Remove dangling services
   -deregister=&quot;always&quot;: Deregister exited services &quot;always&quot; or &quot;on-success&quot;
   -explicit=false: Only register containers which have SERVICE_NAME label set
+  -healthcheck-port=0: Port for the health check server (e.g. 8080). 0 disables it.
   -internal=false: Use internal ports instead of published ones
   -ip=&quot;&quot;: IP for ports mapped to the host
   -resync=0: Frequency with which services are resynchronized
@@ -889,6 +912,40 @@ Guide. Typically, running Registrator looks like this:</p>
   -tags=&quot;&quot;: Append tags for all registered services (supports Go template)
   -ttl=0: TTL for services (default is no expiry)
   -ttl-refresh=0: Frequency with which service TTLs are refreshed
+</code></pre>
+<h2 id="health-check-opentelemetry-compatible">Health Check (OpenTelemetry Compatible)</h2>
+<p>Registrator includes a built-in health check HTTP server that is compatible with standard probes and OpenTelemetry requirements (e.g. the <code>httpcheck</code> receiver).</p>
+<p>To enable it, pass the <code>-healthcheck-port=&lt;port&gt;</code> flag. This will start an HTTP server on that port, exposing two endpoints (<code>/</code> and <code>/health</code>) that return HTTP 200 with a JSON status and metadata.</p>
+<p>The response includes the status and internal metrics (CPU load and memory usage) useful for telemetry:</p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;UP&quot;,
+  &quot;metrics&quot;: {
+    &quot;cpu_load_15m&quot;: &quot;0.05&quot;,
+    &quot;cpu_load_1m&quot;: &quot;0.00&quot;,
+    &quot;cpu_load_5m&quot;: &quot;0.01&quot;,
+    &quot;cpus&quot;: 4,
+    &quot;goroutines&quot;: 12,
+    &quot;memory_alloc_bytes&quot;: 1423456,
+    &quot;memory_sys_bytes&quot;: 6234567
+  }
+}
+</code></pre>
+<p>Example configuration in <code>docker-compose.yml</code> to specify the port and frequency of the health check:</p>
+<pre><code class="language-yaml">version: '3.8'
+
+services:
+  registrator:
+    image: marioezquerro/registrator:v7.4.23
+    command: -healthcheck-port=8080 consul://consul:8500
+    network_mode: &quot;host&quot;
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    healthcheck:
+      test: [&quot;CMD-SHELL&quot;, &quot;wget -q --spider http://127.0.0.1:8080/health || exit 1&quot;]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
 </code></pre>
 <h2 id="contributing">Contributing</h2>
 <p>Pull requests are welcome! We recommend getting feedback before starting by
@@ -903,7 +960,7 @@ for inspiration.</p>
 <h2 id="license">License</h2>
 <h2 id="mit">MIT</h2>
 <blockquote>
-<p><strong>Versión actual:</strong> <code>v7.4.16</code></p>
+<p><strong>Versión actual:</strong> <code>v7.4.23</code></p>
 </blockquote>
 
 
