@@ -113,6 +113,8 @@ services:
     command: -healthcheck-port=8080 -retry-attempts -1 consul://consul:8500
     depends_on:
       - consul
+    ports:
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     healthcheck:
