@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -854,11 +854,11 @@
 <h1 id="registrator">Registrator</h1>
 <p>Service registry bridge for Docker.</p>
 <p><a href="https://github.com/mario-ezquerro/registrator/actions"><img alt="CI/CD Pipeline" src="https://github.com/mario-ezquerro/registrator/actions/workflows/ci.yml/badge.svg" /></a>
-<a href="https://go.dev/"><img alt="Go Version" src="https://img.shields.io/badge/Go-1.25-blue.svg?style=shield&amp;logo=go" /></a>
-<a href="https://hub.docker.com/r/marioezquerro/registrator/"><img alt="Docker pulls" src="https://img.shields.io/docker/pulls/marioezquerro/registrator.svg" /></a>
+<a href="https://go.dev/"><img alt="Go Version" src="https://img.shields.io/badge/Go-1.26-blue.svg?style=shield&amp;logo=go" /></a>
+<a href="https://hub.docker.com/r/cloudresources/registrator/"><img alt="Docker pulls" src="https://img.shields.io/docker/pulls/cloudresources/registrator.svg" /></a>
 <a href="https://github.com/mario-ezquerro/registrator/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/mario-ezquerro/registrator.svg" /></a>
 <a href="https://github.com/mario-ezquerro/registrator/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/mario-ezquerro/registrator.svg" /></a>
-<a href="https://hub.docker.com/r/marioezquerro/registrator/tags"><img alt="Platforms" src="https://img.shields.io/badge/platform-linux%2Famd64%20%7C%20linux%2Farm64-lightgrey" /></a>
+<a href="https://hub.docker.com/r/cloudresources/registrator/tags"><img alt="Platforms" src="https://img.shields.io/badge/platform-linux%2Famd64%20%7C%20linux%2Farm64-lightgrey" /></a>
 <br /><br /></p>
 <p>Registrator automatically registers and deregisters services for any Docker
 container by inspecting containers as they come online. Registrator
@@ -867,8 +867,8 @@ supports pluggable service registries, which currently includes
 <a href="https://github.com/skynetservices/skydns/">SkyDNS 2</a>.</p>
 <p>Full documentation available at https://github.com/mario-ezquerro/registrator</p>
 <h2 id="getting-registrator">Getting Registrator</h2>
-<p>Get the latest release, master, or any version of Registrator via <a href="https://hub.docker.com/r/marioezquerro/registrator">Docker Hub</a>:</p>
-<pre><code>$ docker pull marioezquerro/registrator:latest
+<p>Get the latest release, master, or any version of Registrator via <a href="https://hub.docker.com/r/cloudresources/registrator">Docker Hub</a>:</p>
+<pre><code>$ docker pull cloudresources/registrator:latest
 </code></pre>
 <p>Latest tag always points to the latest release. There is also a <code>:master</code> tag
 and version tags to pin to specific releases.</p>
@@ -892,7 +892,7 @@ Guide. Typically, running Registrator looks like this:</p>
     --name=registrator \
     --net=host \
     --volume=/var/run/docker.sock:/tmp/docker.sock \
-    marioezquerro/registrator:v7.4.5 \
+    cloudresources/registrator:v7.4.5 \
       consul://localhost:8500
 </code></pre>
 <p>Confirm the registration in the browser at http://localhost:8500 and you should see the consul-server service registered.</p>
@@ -942,7 +942,7 @@ services:
       - &quot;8600:8600/udp&quot;
 
   registrator:
-    image: marioezquerro/registrator:v7.4.23
+    image: cloudresources/registrator:v7.4.23
     command: -healthcheck-port=8080 -retry-attempts -1 consul://consul:8500
     depends_on:
       - consul
@@ -970,7 +970,7 @@ for inspiration.</p>
 <h2 id="license">License</h2>
 <h2 id="mit">MIT</h2>
 <blockquote>
-<p><strong>Versión actual:</strong> <code>v7.4.24</code></p>
+<p><strong>Versión actual:</strong> <code>v7.4.25</code></p>
 </blockquote>
 
 
@@ -1030,7 +1030,7 @@ for inspiration.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
