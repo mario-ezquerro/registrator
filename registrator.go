@@ -5,16 +5,16 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"runtime"
 	"strings"
 	"time"
-	"net/http"
 
+	"encoding/json"
 	dockerapi "github.com/fsouza/go-dockerclient"
 	"github.com/gliderlabs/pkg/usage"
 	"github.com/mario-ezquerro/registrator/bridge"
-	"encoding/json"
 )
 
 var Version string

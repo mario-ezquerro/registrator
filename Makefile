@@ -1,7 +1,7 @@
 NAME=registrator
 VERSION=$(shell cat VERSION)
 DEV_RUN_OPTS ?= consul:
-DOCKER_USER ?= mario-ezquerro
+DOCKER_USER ?= cloudresources
 SOURCES := $(shell find . -name '*.go')
 
 .PHONY: dev build bump-version build-multiarch push-multiarch release docs circleci lint test vet fmt

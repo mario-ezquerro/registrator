@@ -3,11 +3,11 @@
 Service registry bridge for Docker.
 
 [![CI/CD Pipeline](https://github.com/mario-ezquerro/registrator/actions/workflows/ci.yml/badge.svg)](https://github.com/mario-ezquerro/registrator/actions)
-[![Go Version](https://img.shields.io/badge/Go-1.25-blue.svg?style=shield&logo=go)](https://go.dev/)
-[![Docker pulls](https://img.shields.io/docker/pulls/marioezquerro/registrator.svg)](https://hub.docker.com/r/marioezquerro/registrator/)
+[![Go Version](https://img.shields.io/badge/Go-1.26-blue.svg?style=shield&logo=go)](https://go.dev/)
+[![Docker pulls](https://img.shields.io/docker/pulls/cloudresources/registrator.svg)](https://hub.docker.com/r/cloudresources/registrator/)
 [![GitHub release](https://img.shields.io/github/release/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/releases)
 [![License](https://img.shields.io/github/license/mario-ezquerro/registrator.svg)](https://github.com/mario-ezquerro/registrator/blob/master/LICENSE)
-[![Platforms](https://img.shields.io/badge/platform-linux%2Famd64%20%7C%20linux%2Farm64-lightgrey)](https://hub.docker.com/r/marioezquerro/registrator/tags)
+[![Platforms](https://img.shields.io/badge/platform-linux%2Famd64%20%7C%20linux%2Farm64-lightgrey)](https://hub.docker.com/r/cloudresources/registrator/tags)
 <br /><br />
 
 Registrator automatically registers and deregisters services for any Docker
@@ -20,9 +20,9 @@ Full documentation available at https://github.com/mario-ezquerro/registrator
 
 ## Getting Registrator
 
-Get the latest release, master, or any version of Registrator via [Docker Hub](https://hub.docker.com/r/marioezquerro/registrator):
+Get the latest release, master, or any version of Registrator via [Docker Hub](https://hub.docker.com/r/cloudresources/registrator):
 
-	$ docker pull marioezquerro/registrator:latest
+	$ docker pull cloudresources/registrator:latest
 
 Latest tag always points to the latest release. There is also a `:master` tag
 and version tags to pin to specific releases.
@@ -50,7 +50,7 @@ Connect with a browser to http://localhost:8500 and then run the following comma
         --name=registrator \
         --net=host \
         --volume=/var/run/docker.sock:/tmp/docker.sock \
-        marioezquerro/registrator:v7.4.5 \
+        cloudresources/registrator:v7.4.5 \
           consul://localhost:8500
 
 Confirm the registration in the browser at http://localhost:8500 and you should see the consul-server service registered.
@@ -109,7 +109,7 @@ services:
       - "8600:8600/udp"
 
   registrator:
-    image: marioezquerro/registrator:v7.4.23
+    image: cloudresources/registrator:v7.4.23
     command: -healthcheck-port=8080 -retry-attempts -1 consul://consul:8500
     depends_on:
       - consul

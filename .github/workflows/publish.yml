@@ -30,8 +30,8 @@ jobs:
 
       - name: Build and Push Multi-architecture (ARM & x86)
         env:
-          # Pasamos los credenciales al Makefile que ejecuta docker buildx push
-          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          # Usamos la organización de destino manteniendo los secretos de autenticación
+          DOCKER_USER: cloudresources
         run: |
           # Nuestro archivo Makefile ya leerá la nueva versión usando $(shell cat VERSION)
           # además, debido a la regla interna, hará bump automático e inyectará el tag de versión nuevo
